@@ -4,14 +4,13 @@ const config = require("./src/app/config.js");
 const errorHandle = require("./src/app/error-handle.js");
 require("./src/app/database.js");
 
-const userRouter = require("./src//router/user.router.js");
-
 const app = new Koa(); //初始化koa框架
 
 app.use(bodyParser()); //post数据解析
 
-app.use(userRouter.routes());
-app.use(userRouter.allowedMethods());
+//注册所有路由
+const useRoutes = require("./src/router/index.js");
+useRoutes(app);
 
 //监听错误
 app.on("error", errorHandle);

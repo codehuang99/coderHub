@@ -3,7 +3,9 @@ const {
   USER_ALREADT_EXISTS,
 } = require("../constants/error-types.js");
 const service = require("../service/user.service.js");
+const { md5password } = require("../utils/password-handle.js");
 
+//验证用户名密码中间件
 const verifyUser = async (ctx, next) => {
   //获取请求的数据{用户名，密码}
   const { name, password } = ctx.request.body;
@@ -22,6 +24,15 @@ const verifyUser = async (ctx, next) => {
   await next();
 };
 
+//密码加密中间件
+const handlePassword = async (ctx, next) => {
+  let { password } = ctx.request.body;
+  ctx.request.body.password = md5password(password);
+
+  await next();
+};
+
 module.exports = {
   verifyUser,
+  handlePassword,
 };
